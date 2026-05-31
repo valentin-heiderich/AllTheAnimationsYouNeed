@@ -93,6 +93,9 @@ export default class AbstractStringSymphony extends BaseAnimation {
           if (Math.abs(pluckForce) < 3) {
             pluckForce = 8 * Math.sign(dy || 1); // Minimum snap threshold
           }
+
+          // Trigger physical pluck sound synthesis
+          this.playPluckSound(idx, pluckForce);
         }
       }
 
@@ -209,9 +212,54 @@ export default class AbstractStringSymphony extends BaseAnimation {
     this.prevMouse.y = null;
   }
 
+  playPluckSound(index, force) {
+    if (this.canvas && this.canvas.getAttribute('data-audio-muted') === 'true') {
+      return;
+    }
+
+    try {
+      if (!this.audioCtx) {
+        this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      
+      if (this.audioCtx.state === 'suspended') {
+        this.audioCtx.resume();
+      }
+      
+      const ctx = this.audioCtx;
+      const osc = ctx.createOscillator();
+      const gainNode = ctx.createGain();
+      
+      osc.connect(gainNode);
+      gainNode.connect(ctx.destination);
+      
+      const pentatonic = [130.81, 155.56, 174.61, 196.00, 233.08, 261.63, 311.13, 349.23, 392.00, 466.16, 523.25, 622.25];
+      const freqIndex = pentatonic.length - 1 - (index % pentatonic.length);
+      const frequency = pentatonic[freqIndex];
+      
+      osc.frequency.setValueAtTime(frequency, ctx.currentTime);
+      
+      const volume = Math.min(0.22, Math.abs(force) * 0.01);
+      gainNode.gain.setValueAtTime(0, ctx.currentTime);
+      gainNode.gain.linearRampToValueAtTime(volume, ctx.currentTime + 0.006);
+      gainNode.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 1.2);
+      
+      osc.type = 'triangle';
+      
+      osc.start(ctx.currentTime);
+      osc.stop(ctx.currentTime + 1.25);
+    } catch (err) {
+      console.warn('Web Audio synthesis failed: ', err);
+    }
+  }
+
   destroy() {
     super.destroy();
     this.strings = [];
+    if (this.audioCtx) {
+      this.audioCtx.close();
+      this.audioCtx = null;
+    }
   }
 
   static get title() {
@@ -334,6 +382,8 @@ export default class AbstractStringSymphony extends BaseAnimation {
           if (Math.abs(pluckForce) < 3) {
             pluckForce = 8 * Math.sign(dy || 1);
           }
+
+          this.playPluckSound(idx, pluckForce);
         }
       }
 
@@ -434,6 +484,45 @@ export default class AbstractStringSymphony extends BaseAnimation {
     this.mouse.y = null;
     this.prevMouse.x = null;
     this.prevMouse.y = null;
+  }
+
+  playPluckSound(index, force) {
+    if (this.canvas && this.canvas.getAttribute('data-audio-muted') === 'true') {
+      return;
+    }
+
+    try {
+      if (!this.audioCtx) {
+        this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (this.audioCtx.state === 'suspended') {
+        this.audioCtx.resume();
+      }
+      const ctx = this.audioCtx;
+      const osc = ctx.createOscillator();
+      const gainNode = ctx.createGain();
+      
+      osc.connect(gainNode);
+      gainNode.connect(ctx.destination);
+      
+      const pentatonic = [130.81, 155.56, 174.61, 196.00, 233.08, 261.63, 311.13, 349.23, 392.00, 466.16, 523.25, 622.25];
+      const freqIndex = pentatonic.length - 1 - (index % pentatonic.length);
+      const frequency = pentatonic[freqIndex];
+      
+      osc.frequency.setValueAtTime(frequency, ctx.currentTime);
+      
+      const volume = Math.min(0.22, Math.abs(force) * 0.01);
+      gainNode.gain.setValueAtTime(0, ctx.currentTime);
+      gainNode.gain.linearRampToValueAtTime(volume, ctx.currentTime + 0.006);
+      gainNode.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 1.2);
+      
+      osc.type = 'triangle';
+      
+      osc.start(ctx.currentTime);
+      osc.stop(ctx.currentTime + 1.25);
+    } catch (err) {
+      console.warn('Web Audio synthesis failed: ', err);
+    }
   }
 }`;
   }

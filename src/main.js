@@ -84,6 +84,37 @@ const descElem = document.getElementById('animation-description');
 const vibeElem = document.getElementById('spec-vibe');
 const copyBtn = document.getElementById('copy-btn');
 const toast = document.getElementById('toast-notif');
+const muteBtn = document.getElementById('mute-btn');
+const muteIcon = document.getElementById('mute-icon');
+
+// Initialize Mute State from localStorage
+let isMuted = localStorage.getItem('aetherflow_audio_muted') === 'true';
+canvas.setAttribute('data-audio-muted', isMuted ? 'true' : 'false');
+updateMuteIcon();
+
+// Sound toggle listener
+muteBtn.addEventListener('click', () => {
+  isMuted = !isMuted;
+  localStorage.setItem('aetherflow_audio_muted', isMuted ? 'true' : 'false');
+  canvas.setAttribute('data-audio-muted', isMuted ? 'true' : 'false');
+  updateMuteIcon();
+});
+
+function updateMuteIcon() {
+  if (isMuted) {
+    muteIcon.innerHTML = `
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15zM17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"></path>
+    `;
+    muteBtn.classList.remove('text-indigo-400', 'border-indigo-500/10');
+    muteBtn.classList.add('text-slate-500', 'border-slate-500/5');
+  } else {
+    muteIcon.innerHTML = `
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path>
+    `;
+    muteBtn.classList.remove('text-slate-500', 'border-slate-500/5');
+    muteBtn.classList.add('text-indigo-400', 'border-indigo-500/10');
+  }
+}
 
 // Telemetry DOM Bindings
 const telemetry = {

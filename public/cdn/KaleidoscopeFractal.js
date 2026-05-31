@@ -85,11 +85,6 @@ export default class KaleidoscopeFractal extends BaseAnimation {
 
         // Rainbow prism glow
         ctx.strokeStyle = `hsla(${(shape.colorHue + time * 0.05) % 360}, 100%, 65%, 0.45)`;
-        ctx.fillStyle = `hsla(${(shape.colorHue + time * 0.05) % 360}, 100%, 65%, 0.03)`;
-        ctx.lineWidth = 1.5;
-        ctx.shadowBlur = 6;
-        ctx.shadowColor = `hsla(${(shape.colorHue + time * 0.05) % 360}, 100%, 65%, 0.5)`;
-
         ctx.save();
         ctx.translate(shapeX, shapeY);
         ctx.rotate(time * 0.001 + index);
@@ -109,7 +104,6 @@ export default class KaleidoscopeFractal extends BaseAnimation {
           ctx.lineTo(0, curSize * 0.5);
         }
         ctx.stroke();
-        ctx.fill();
         ctx.restore();
       });
 
@@ -117,7 +111,6 @@ export default class KaleidoscopeFractal extends BaseAnimation {
     }
 
     ctx.restore();
-    ctx.shadowBlur = 0; // Reset shadow for performance
   }
 
   destroy() {
@@ -244,11 +237,6 @@ export default class KaleidoscopeFractal extends BaseAnimation {
         const curSize = shape.size * (1.0 + Math.sin(time * 0.002 + index) * 0.2);
 
         this.ctx.strokeStyle = \`hsla(\${(shape.colorHue + time * 0.05) % 360}, 100%, 65%, 0.45)\`;
-        this.ctx.fillStyle = \`hsla(\${(shape.colorHue + time * 0.05) % 360}, 100%, 65%, 0.03)\`;
-        this.ctx.lineWidth = 1.5;
-        this.ctx.shadowBlur = 6;
-        this.ctx.shadowColor = \`hsla(\${(shape.colorHue + time * 0.05) % 360}, 100%, 65%, 0.5)\`;
-
         this.ctx.save();
         this.ctx.translate(shapeX, shapeY);
         this.ctx.rotate(time * 0.001 + index);
@@ -266,7 +254,6 @@ export default class KaleidoscopeFractal extends BaseAnimation {
           this.ctx.lineTo(0, curSize * 0.5);
         }
         this.ctx.stroke();
-        this.ctx.fill();
         this.ctx.restore();
       });
 
@@ -274,7 +261,6 @@ export default class KaleidoscopeFractal extends BaseAnimation {
     }
 
     this.ctx.restore();
-    this.ctx.shadowBlur = 0;
     requestAnimationFrame((t) => this.animate(t));
   }
 

@@ -6,45 +6,40 @@ export default class ASCIICyberStreams extends BaseAnimation {
     this.columns = [];
     this.fontSize = 15;
     this.mouse = { x: null, y: null, active: false, radius: 150 };
-    this.colors = ['#00F0FF', '#00A8FF', '#0066FF', '#0033CC']; // Bright cyan & digital blues
+    this.colors = ['#00F0FF', '#00A8FF', '#0066FF', '#0033CC']; // Cyber blues & cyans
     this.chars = '01010101ABCDEF⚡☣⚙✦✧█▓▒░'.split('');
   }
 
   setup() {
     this.columns = [];
-    const columnCount = Math.floor(this.width / this.fontSize);
+    // Spacing between columns for clean sparse waterfalls
+    const spacing = Math.round(this.fontSize * 1.3);
+    const columnCount = Math.floor(this.width / spacing);
 
     for (let i = 0; i < columnCount; i++) {
-      const colX = i * this.fontSize;
-      const colHeight = this.height;
-
-      // Create multiple characters stacked vertically in this stream
-      const maxChars = Math.floor(colHeight / this.fontSize) + 2;
+      const colX = i * spacing;
+      const trailLength = Math.floor(Math.random() * 10) + 10; // 10-20 characters long
+      
+      // Statically cache stream character values to avoid generation inside loops
       const streamChars = [];
-
-      for (let j = 0; j < maxChars; j++) {
-        streamChars.push({
-          x: colX,
-          y: j * this.fontSize,
-          char: this.chars[Math.floor(Math.random() * this.chars.length)],
-          opacity: Math.random() * 0.8 + 0.2,
-          pulseSpeed: Math.random() * 0.05 + 0.01,
-          pulseOffset: Math.random() * Math.PI * 2
-        });
+      for (let c = 0; c < 30; c++) {
+        streamChars.push(this.chars[Math.floor(Math.random() * this.chars.length)]);
       }
 
       this.columns.push({
         x: colX,
-        speed: Math.random() * 2 + 1.2,
-        yOffset: Math.random() * -this.height, // Initial staggered fall offsets
-        chars: streamChars
+        speed: Math.random() * 2.8 + 1.8,
+        headY: Math.random() * -this.height - 100, // Staggered initial coordinates
+        trailLength,
+        charsCache: streamChars,
+        baseAlpha: Math.random() * 0.45 + 0.55
       });
     }
   }
 
   resize(width, height) {
     super.resize(width, height);
-    this.setup(); // Re-initialize streams to properly match new bounds
+    this.setup();
   }
 
   draw(ctx, time) {
@@ -61,24 +56,27 @@ export default class ASCIICyberStreams extends BaseAnimation {
     for (let i = 0; i < numColumns; i++) {
       const col = this.columns[i];
 
-      // Update stream offset (continuous falling effect)
-      col.yOffset += col.speed;
-      if (col.yOffset > 0) {
-        col.yOffset = -this.height * 0.5; // Loop back up staggered
+      // Update waterfall head position
+      col.headY += col.speed;
+      if (col.headY > this.height + col.trailLength * this.fontSize) {
+        col.headY = -15 * this.fontSize; // Loop back up
+        col.speed = Math.random() * 2.8 + 1.8;
       }
 
-      // Draw all characters in this stream column
-      const numChars = col.chars.length;
-      for (let j = 0; j < numChars; j++) {
-        const charData = col.chars[j];
+      // Draw the trailing character cascade
+      for (let j = 0; j < col.trailLength; j++) {
+        const origY = col.headY - (j * this.fontSize);
         
-        // Compute raw position
-        const origX = charData.x;
-        const origY = (charData.y + col.yOffset + this.height) % this.height;
+        // Skip drawing if this specific character is offscreen
+        if (origY < -this.fontSize || origY > this.height) continue;
 
+        const origX = col.x;
         let renderX = origX;
         let renderY = origY;
-        let finalAlpha = charData.opacity;
+        
+        // Fades alpha toward tail
+        const trailRatio = j / col.trailLength; // 0 (head) to 1 (tail)
+        let finalAlpha = (1.0 - trailRatio) * col.baseAlpha;
 
         // Dynamic Cursor Repulsion Shield
         if (this.mouse.active && this.mouse.x !== null) {
@@ -87,57 +85,52 @@ export default class ASCIICyberStreams extends BaseAnimation {
           const dist = Math.hypot(dx, dy);
 
           if (dist < shieldRadius && dist > 0) {
-            // Push force increases exponentially as characters get closer to center
             const pushFactor = (shieldRadius - dist) / dist;
             
             // Warp coordinates away from cursor
-            renderX = origX + dx * pushFactor * 0.8;
-            renderY = origY + dy * pushFactor * 0.8;
+            renderX = origX + dx * pushFactor * 0.75;
+            renderY = origY + dy * pushFactor * 0.75;
 
             // Fade characters out significantly as they get pushed
-            finalAlpha = (dist / shieldRadius) * 0.25; 
+            finalAlpha *= (dist / shieldRadius) * 0.2; 
           }
         }
 
-        // Randomly mutate character occasionally for dynamic glitch/stream look
-        if (Math.random() < 0.002) {
-          charData.char = this.chars[Math.floor(Math.random() * this.chars.length)];
+        if (finalAlpha < 0.02) continue;
+
+        // Dynamic glitch character mutation
+        const charIndex = (Math.floor(time * 0.005 + j) + i) % col.charsCache.length;
+        let activeChar = col.charsCache[charIndex];
+        
+        if (Math.random() < 0.005) {
+          col.charsCache[charIndex] = this.chars[Math.floor(Math.random() * this.chars.length)];
         }
 
-        // Compute glowing pulse opacity
-        const pulse = Math.sin(time * charData.pulseSpeed + charData.pulseOffset) * 0.2 + 0.8;
-        ctx.globalAlpha = finalAlpha * pulse;
+        ctx.globalAlpha = finalAlpha;
 
-        // Dynamic cyber-hued gradients depending on index/position
-        const colorIndex = Math.min(
-          this.colors.length - 1,
-          Math.floor((origY / this.height) * this.colors.length)
-        );
-        let activeColor = this.colors[colorIndex];
-
-        // Make the leading character of each stream white-hot for high contrast
-        const isLeadingChar = Math.abs(origY - ((col.yOffset + this.height) % this.height)) < this.fontSize * 1.5;
-        if (isLeadingChar && finalAlpha > 0.4) {
+        // Colors: Leading head character is white-hot, tail cascades through blues
+        if (j === 0) {
           ctx.fillStyle = '#FFFFFF';
-          ctx.shadowBlur = 10;
-          ctx.shadowColor = '#00F0FF';
         } else {
-          ctx.fillStyle = activeColor;
-          ctx.shadowBlur = 0;
+          // Color based on height ratios
+          const colorIndex = Math.min(
+            this.colors.length - 1,
+            Math.floor((origY / this.height) * this.colors.length)
+          );
+          ctx.fillStyle = this.colors[colorIndex];
         }
 
-        ctx.fillText(charData.char, renderX, renderY);
+        ctx.fillText(activeChar, renderX, renderY);
       }
     }
 
     // Clean up drawing states
-    ctx.shadowBlur = 0;
     ctx.globalAlpha = 1.0;
 
-    // Optional subtle terminal overlay (CRT scanlines)
-    ctx.fillStyle = 'rgba(2, 4, 10, 0.05)';
+    // Fast terminal horizontal scanlines (no shadow or filter lag!)
+    ctx.fillStyle = 'rgba(2, 4, 10, 0.06)';
     for (let y = 0; y < this.height; y += 4) {
-      ctx.fillRect(0, y, this.width, 1.5);
+      ctx.fillRect(0, y, this.width, 1.2);
     }
   }
 
@@ -197,30 +190,24 @@ export default class ASCIICyberStreams extends BaseAnimation {
 
   setup() {
     this.columns = [];
-    const columnCount = Math.floor(this.width / this.fontSize);
+    const spacing = Math.round(this.fontSize * 1.3);
+    const columnCount = Math.floor(this.width / spacing);
 
     for (let i = 0; i < columnCount; i++) {
-      const colX = i * this.fontSize;
-      const colHeight = this.height;
-      const maxChars = Math.floor(colHeight / this.fontSize) + 2;
+      const colX = i * spacing;
+      const trailLength = Math.floor(Math.random() * 10) + 10;
       const streamChars = [];
-
-      for (let j = 0; j < maxChars; j++) {
-        streamChars.push({
-          x: colX,
-          y: j * this.fontSize,
-          char: this.chars[Math.floor(Math.random() * this.chars.length)],
-          opacity: Math.random() * 0.8 + 0.2,
-          pulseSpeed: Math.random() * 0.05 + 0.01,
-          pulseOffset: Math.random() * Math.PI * 2
-        });
+      for (let c = 0; c < 30; c++) {
+        streamChars.push(this.chars[Math.floor(Math.random() * this.chars.length)]);
       }
 
       this.columns.push({
         x: colX,
-        speed: Math.random() * 2 + 1.2,
-        yOffset: Math.random() * -this.height,
-        chars: streamChars
+        speed: Math.random() * 2.8 + 1.8,
+        headY: Math.random() * -this.height - 100,
+        trailLength,
+        charsCache: streamChars,
+        baseAlpha: Math.random() * 0.45 + 0.55
       });
     }
   }
@@ -249,20 +236,21 @@ export default class ASCIICyberStreams extends BaseAnimation {
 
     for (let i = 0; i < numColumns; i++) {
       const col = this.columns[i];
-      col.yOffset += col.speed;
-      if (col.yOffset > 0) {
-        col.yOffset = -this.height * 0.5;
+      col.headY += col.speed;
+      if (col.headY > this.height + col.trailLength * this.fontSize) {
+        col.headY = -15 * this.fontSize;
+        col.speed = Math.random() * 2.8 + 1.8;
       }
 
-      const numChars = col.chars.length;
-      for (let j = 0; j < numChars; j++) {
-        const charData = col.chars[j];
-        const origX = charData.x;
-        const origY = (charData.y + col.yOffset + this.height) % this.height;
+      for (let j = 0; j < col.trailLength; j++) {
+        const origY = col.headY - (j * this.fontSize);
+        if (origY < -this.fontSize || origY > this.height) continue;
 
+        const origX = col.x;
         let renderX = origX;
         let renderY = origY;
-        let finalAlpha = charData.opacity;
+        const trailRatio = j / col.trailLength;
+        let finalAlpha = (1.0 - trailRatio) * col.baseAlpha;
 
         if (this.mouse.active && this.mouse.x !== null) {
           const dx = origX - this.mouse.x;
@@ -271,46 +259,43 @@ export default class ASCIICyberStreams extends BaseAnimation {
 
           if (dist < shieldRadius && dist > 0) {
             const pushFactor = (shieldRadius - dist) / dist;
-            renderX = origX + dx * pushFactor * 0.8;
-            renderY = origY + dy * pushFactor * 0.8;
-            finalAlpha = (dist / shieldRadius) * 0.25;
+            renderX = origX + dx * pushFactor * 0.75;
+            renderY = origY + dy * pushFactor * 0.75;
+            finalAlpha *= (dist / shieldRadius) * 0.2;
           }
         }
 
-        if (Math.random() < 0.002) {
-          charData.char = this.chars[Math.floor(Math.random() * this.chars.length)];
+        if (finalAlpha < 0.02) continue;
+
+        const charIndex = (Math.floor(time * 0.005 + j) + i) % col.charsCache.length;
+        let activeChar = col.charsCache[charIndex];
+        
+        if (Math.random() < 0.005) {
+          col.charsCache[charIndex] = this.chars[Math.floor(Math.random() * this.chars.length)];
         }
 
-        const pulse = Math.sin(time * charData.pulseSpeed + charData.pulseOffset) * 0.2 + 0.8;
-        this.ctx.globalAlpha = finalAlpha * pulse;
+        this.ctx.globalAlpha = finalAlpha;
 
-        const colorIndex = Math.min(
-          this.colors.length - 1,
-          Math.floor((origY / this.height) * this.colors.length)
-        );
-        let activeColor = this.colors[colorIndex];
-
-        const isLeadingChar = Math.abs(origY - ((col.yOffset + this.height) % this.height)) < this.fontSize * 1.5;
-        if (isLeadingChar && finalAlpha > 0.4) {
+        if (j === 0) {
           this.ctx.fillStyle = '#FFFFFF';
-          this.ctx.shadowBlur = 10;
-          this.ctx.shadowColor = '#00F0FF';
         } else {
-          this.ctx.fillStyle = activeColor;
-          this.ctx.shadowBlur = 0;
+          const colorIndex = Math.min(
+            this.colors.length - 1,
+            Math.floor((origY / this.height) * this.colors.length)
+          );
+          this.ctx.fillStyle = this.colors[colorIndex];
         }
 
-        this.ctx.fillText(charData.char, renderX, renderY);
+        this.ctx.fillText(activeChar, renderX, renderY);
       }
     }
 
-    this.ctx.shadowBlur = 0;
     this.ctx.globalAlpha = 1.0;
 
-    // Subtle terminal scanline grid overlay
-    this.ctx.fillStyle = 'rgba(2, 4, 10, 0.05)';
+    // Terminal scanlines overlay
+    this.ctx.fillStyle = 'rgba(2, 4, 10, 0.06)';
     for (let y = 0; y < this.height; y += 4) {
-      this.ctx.fillRect(0, y, this.width, 1.5);
+      this.ctx.fillRect(0, y, this.width, 1.2);
     }
 
     requestAnimationFrame((t) => this.animate(t));
