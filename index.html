@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AetherFlow // Interactive Canvas Backgrounds</title>
+    <meta name="description" content="An interactive gallery of high-performance, colorful canvas background animations for the modern web." />
+  </head>
+  <body class="bg-[#080A10] text-slate-100 select-none overflow-hidden h-screen w-screen">
+    
+    <div class="flex h-full w-full overflow-hidden">
+      
+      <!-- LEFT SIDEBAR: DARK GLASS NAVIGATION -->
+      <aside class="w-72 md:w-80 lg:w-90 flex-shrink-0 h-full flex flex-col border-r border-white/5 bg-[#090C12] z-20 relative">
+        <!-- Accent Glow behind logo -->
+        <div class="absolute -top-12 -left-12 w-32 h-32 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
+        
+        <!-- Header / Branding -->
+        <div class="p-6 border-b border-white/5 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <!-- Sleek animated logo -->
+            <div class="relative w-8 h-8 flex items-center justify-center rounded-lg bg-gradient-to-tr from-indigo-500 to-purple-600 shadow-md shadow-indigo-500/20">
+              <div class="absolute inset-0.5 rounded-[6px] bg-[#090C12] flex items-center justify-center">
+                <div class="w-3.5 h-3.5 rounded-full bg-gradient-to-tr from-indigo-400 to-purple-500 animate-pulse"></div>
+              </div>
+            </div>
+            <div>
+              <h1 class="text-lg font-bold tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-100 to-slate-400">
+                AETHERFLOW
+              </h1>
+              <p class="text-[10px] text-indigo-400 tracking-widest uppercase font-semibold">Canvas Engine</p>
+            </div>
+          </div>
+          <span class="text-[10px] bg-white/5 border border-white/10 px-2 py-0.5 rounded-full text-slate-400 font-mono">v1.0</span>
+        </div>
+
+        <!-- Scrollable Navigation Panel -->
+        <nav class="flex-grow overflow-y-auto px-4 py-6 space-y-2" id="sidebar-nav">
+          <div class="text-[10px] font-bold tracking-widest text-slate-500 px-3 uppercase mb-3">
+            Available Backgrounds
+          </div>
+          <div id="animation-list" class="space-y-1.5">
+            <!-- Navigation items populated dynamically via JavaScript -->
+          </div>
+        </nav>
+
+        <!-- Dynamic Debug/Telemetry Panel -->
+        <div class="p-6 border-t border-white/5 bg-[#070A0F] space-y-4">
+          <div class="text-[10px] font-bold tracking-widest text-slate-500 uppercase">
+            Performance Metrics
+          </div>
+          <div class="grid grid-cols-2 gap-3 text-xs font-mono">
+            <div class="bg-white/2 border border-white/5 rounded-lg p-2.5 flex flex-col justify-between">
+              <span class="text-slate-400 text-[10px] mb-1">FPS Counter</span>
+              <span id="fps-counter" class="text-emerald-400 font-bold text-base leading-none">00</span>
+            </div>
+            <div class="bg-white/2 border border-white/5 rounded-lg p-2.5 flex flex-col justify-between">
+              <span class="text-slate-400 text-[10px] mb-1">Canvas Size</span>
+              <span id="canvas-dim" class="text-indigo-300 text-[11px] font-semibold leading-none truncate">0x0</span>
+            </div>
+          </div>
+          <div class="text-[10px] text-slate-500 text-center font-mono">
+            Vanilla JS • Hardware Accelerated
+          </div>
+        </div>
+      </aside>
+
+      <!-- RIGHT MAIN CONTAINER: CANVAS VIEW -->
+      <main class="flex-grow h-full relative overflow-hidden bg-[#05070B] flex items-center justify-center">
+        <!-- Full-bleed Canvas element -->
+        <canvas id="bg-canvas" class="absolute inset-0 w-full h-full block bg-transparent pointer-events-auto"></canvas>
+
+        <!-- Floating Glassmorphic Control Overlay -->
+        <div id="info-overlay" class="absolute bottom-8 left-8 right-8 md:right-auto md:max-w-md lg:max-w-lg glass-panel rounded-2xl p-6 md:p-8 flex flex-col gap-5 animate-float z-10 transition-all duration-300">
+          <div class="space-y-2">
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-indigo-500 animate-ping"></span>
+              <span class="text-[10px] text-indigo-400 font-bold tracking-widest uppercase">Active Background</span>
+            </div>
+            <h2 id="animation-title" class="text-2xl font-bold tracking-tight text-white glow-text">
+              Loading Animation...
+            </h2>
+            <p id="animation-description" class="text-slate-300 text-sm leading-relaxed">
+              Fetching details for this interactive canvas rendering cycle.
+            </p>
+          </div>
+
+          <!-- Specs grid -->
+          <div class="grid grid-cols-3 gap-2 border-t border-b border-white/5 py-4 text-center">
+            <div>
+              <div class="text-[10px] text-slate-400 uppercase font-semibold">Engine</div>
+              <div class="text-xs text-white font-mono mt-0.5">Canvas2D</div>
+            </div>
+            <div>
+              <div class="text-[10px] text-slate-400 uppercase font-semibold">Vibe</div>
+              <div class="text-xs text-white font-mono mt-0.5" id="spec-vibe">Organic</div>
+            </div>
+            <div>
+              <div class="text-[10px] text-slate-400 uppercase font-semibold">Frame Rate</div>
+              <div class="text-xs text-emerald-400 font-mono mt-0.5">~60 FPS</div>
+            </div>
+          </div>
+
+          <!-- Copy Action Button -->
+          <button id="copy-btn" class="glass-button flex items-center justify-center gap-2.5 py-3.5 px-6 rounded-xl text-sm font-semibold text-white hover:text-indigo-300 active:scale-98 cursor-pointer focus:outline-none">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path>
+            </svg>
+            <span>Copy Source Code</span>
+          </button>
+        </div>
+
+        <!-- TOAST FLOATING FEEDBACK -->
+        <div id="toast-notif" class="absolute top-8 left-1/2 -translate-x-1/2 glass-panel rounded-xl py-3 px-5 flex items-center gap-2.5 text-sm text-indigo-200 border border-indigo-500/20 shadow-lg shadow-indigo-500/10 pointer-events-none hidden transition-all duration-300">
+          <svg class="w-4.5 h-4.5 text-indigo-400 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
+          </svg>
+          <span class="font-medium tracking-wide">JavaScript Class copied successfully!</span>
+        </div>
+
+      </main>
+
+    </div>
+
+    <!-- Application Initialization -->
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

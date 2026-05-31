@@ -1,0 +1,121 @@
+@import "tailwindcss";
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+:root {
+  font-family: 'Outfit', sans-serif;
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  background-color: #080A10;
+  color: #F8FAFC;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Beautiful custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(11, 15, 25, 0.5);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* Glassmorphism Panel styles */
+.glass-panel {
+  background: rgba(11, 15, 25, 0.6);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+.glass-card {
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(16px) saturate(160%);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.glass-button {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-button:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.15);
+  transform: translateY(-1px);
+}
+
+.glass-button:active {
+  transform: translateY(0);
+}
+
+/* Navigation items styling with micro-interactions */
+.nav-item {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-left: 3px solid transparent;
+}
+
+.nav-item.active {
+  background: linear-gradient(90deg, rgba(99, 102, 241, 0.15) 0%, rgba(168, 85, 247, 0.05) 100%);
+  border-left: 3px solid #6366f1;
+  color: #ffffff;
+  font-weight: 500;
+  box-shadow: inset 1px 0 0 0 rgba(255, 255, 255, 0.05);
+}
+
+.nav-item:not(.active):hover {
+  background: rgba(255, 255, 255, 0.03);
+  color: rgba(255, 255, 255, 0.9);
+  padding-left: 1.5rem;
+}
+
+/* Floating overlay layout animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
+}
+
+.animate-float {
+  animation: float 5s ease-in-out infinite;
+}
+
+/* Glow effects */
+.glow-accent {
+  box-shadow: 0 0 40px -10px rgba(99, 102, 241, 0.3);
+}
+
+.glow-text {
+  text-shadow: 0 0 12px rgba(255, 255, 255, 0.2);
+}
+
+/* Copy notification toast animation */
+@keyframes slideUpFadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1);
+  }
+}
+
+.animate-toast {
+  animation: slideUpFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
