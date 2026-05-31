@@ -15,6 +15,34 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* Screen reader only utility (Accessibility) */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Performance: content-visibility for off-screen sidebar items */
+.nav-item {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 52px;
+}
+
+/* Performance: will-change for actively animated elements */
+.animate-float {
+  will-change: transform;
+}
+
+.animate-toast {
+  will-change: transform, opacity;
+}
+
 /* Beautiful custom scrollbar */
 ::-webkit-scrollbar {
   width: 6px;

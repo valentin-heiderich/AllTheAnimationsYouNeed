@@ -1,0 +1,17 @@
+{
+  "name": "AetherFlow — Interactive Canvas Backgrounds",
+  "short_name": "AetherFlow",
+  "description": "A curated library of 63+ free, high-performance interactive canvas background animations with integrated lofi music engine. Copy-paste CDN snippets for instant use.",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#080A10",
+  "background_color": "#080A10",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ],
+  "categories": ["developer tools", "design", "utilities"]
+}

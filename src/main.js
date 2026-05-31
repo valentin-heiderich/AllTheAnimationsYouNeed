@@ -1,140 +1,13 @@
 import './style.css';
 import AnimationManager from './animations/AnimationManager.js';
 import LofiMusicEngine from './audio/LofiMusicEngine.js';
+import animationRegistry from './animationRegistry.js';
 
-// Import All 63 Animations alphabetically
-import AbstractStringSymphony from './animations/AbstractStringSymphony.js';
-import AcousticMyceliumNetwork from './animations/AcousticMyceliumNetwork.js';
-import ASCIICyberStreams from './animations/ASCIICyberStreams.js';
-import AuroraBorealisWave from './animations/AuroraBorealisWave.js';
-import BendingVineIvy from './animations/BendingVineIvy.js';
-import BioluminescentRain from './animations/BioluminescentRain.js';
-import BioluminescentRainPianos from './animations/BioluminescentRainPianos.js';
-import BioluminescentSwarm from './animations/BioluminescentSwarm.js';
-import BloomingLSystemForest from './animations/BloomingLSystemForest.js';
-import BoidsFlockingSwarm from './animations/BoidsFlockingSwarm.js';
-import CelestialOrbitGravity from './animations/CelestialOrbitGravity.js';
-import ChimingVinesIvy from './animations/ChimingVinesIvy.js';
-import CosmicRibbonFlow from './animations/CosmicRibbonFlow.js';
-import DandelionWindSeeds from './animations/DandelionWindSeeds.js';
-import DelaunayTriangulation from './animations/DelaunayTriangulation.js';
-import DigitalRainMatrix from './animations/DigitalRainMatrix.js';
-import DNASpiralHelix from './animations/DNASpiralHelix.js';
-import FloatingAutumnLeaves from './animations/FloatingAutumnLeaves.js';
-import FloatingAutumnWoodwinds from './animations/FloatingAutumnWoodwinds.js';
-import FlockingButterflies from './animations/FlockingButterflies.js';
-import FlockingButterflyStrings from './animations/FlockingButterflyStrings.js';
-import FluidGradientNoise from './animations/FluidGradientNoise.js';
-import FractalTreeGrowth from './animations/FractalTreeGrowth.js';
-import GeometricMatrixGrid from './animations/GeometricMatrixGrid.js';
-import GeometricSphericalWave from './animations/GeometricSphericalWave.js';
-import GrowingBotanicalFungus from './animations/GrowingBotanicalFungus.js';
-import HexagonalHiveGrid from './animations/HexagonalHiveGrid.js';
-import JellyfishDrift from './animations/JellyfishDrift.js';
-import KaleidoscopeFractal from './animations/KaleidoscopeFractal.js';
-import KineticSandMarimbas from './animations/KineticSandMarimbas.js';
-import KineticSandRipple from './animations/KineticSandRipple.js';
-import LSystemTreeForest from './animations/LSystemTreeForest.js';
-import LavaLampBlobs from './animations/LavaLampBlobs.js';
-import LissajousWebDancer from './animations/LissajousWebDancer.js';
-import MagneticFieldLines from './animations/MagneticFieldLines.js';
-import MandalaTrigonometry from './animations/MandalaTrigonometry.js';
-import MathematicalAttractors from './animations/MathematicalAttractors.js';
-import MysticForestMist from './animations/MysticForestMist.js';
-import NebulaGasSwells from './animations/NebulaGasSwells.js';
-import NebulaGasSwirl from './animations/NebulaGasSwirl.js';
-import NeonParticleWeb from './animations/NeonParticleWeb.js';
-import NeuralNetworkSynapses from './animations/NeuralNetworkSynapses.js';
-import OceanWaveRipple from './animations/OceanWaveRipple.js';
-import PerlinFlowField from './animations/PerlinFlowField.js';
-import PlasmaFractalGlow from './animations/PlasmaFractalGlow.js';
-import PulsingAbyssJellyfish from './animations/PulsingAbyssJellyfish.js';
-import QuantumEntanglement from './animations/QuantumEntanglement.js';
-import QuantumFoamDrift from './animations/QuantumFoamDrift.js';
-import RainbowSpiralTunnel from './animations/RainbowSpiralTunnel.js';
-import ResonantDandelionSeeds from './animations/ResonantDandelionSeeds.js';
-import RiverStoneRefractions from './animations/RiverStoneRefractions.js';
-import RiverStonesFlow from './animations/RiverStonesFlow.js';
-import SoftSnowStorm from './animations/SoftSnowStorm.js';
-import StarfieldHyperdrive from './animations/StarfieldHyperdrive.js';
-import SupernovaExpansion from './animations/SupernovaExpansion.js';
-import SwarmingFireflies from './animations/SwarmingFireflies.js';
-import SwarmingFireflyFlutes from './animations/SwarmingFireflyFlutes.js';
-import TrochoidalWaveHarps from './animations/TrochoidalWaveHarps.js';
-import VerletMossDampener from './animations/VerletMossDampener.js';
-import VortexFlowField from './animations/VortexFlowField.js';
-import WaveInterference from './animations/WaveInterference.js';
-import WindyGrassChimes from './animations/WindyGrassChimes.js';
-import WindyGrassField from './animations/WindyGrassField.js';
-
-// 1. Registry of available 63 animations
-const animations = [
-  AbstractStringSymphony,
-  AcousticMyceliumNetwork,
-  ASCIICyberStreams,
-  AuroraBorealisWave,
-  BendingVineIvy,
-  BioluminescentRain,
-  BioluminescentRainPianos,
-  BioluminescentSwarm,
-  BloomingLSystemForest,
-  BoidsFlockingSwarm,
-  CelestialOrbitGravity,
-  ChimingVinesIvy,
-  CosmicRibbonFlow,
-  DandelionWindSeeds,
-  DelaunayTriangulation,
-  DigitalRainMatrix,
-  DNASpiralHelix,
-  FloatingAutumnLeaves,
-  FloatingAutumnWoodwinds,
-  FlockingButterflies,
-  FlockingButterflyStrings,
-  FluidGradientNoise,
-  FractalTreeGrowth,
-  GeometricMatrixGrid,
-  GeometricSphericalWave,
-  GrowingBotanicalFungus,
-  HexagonalHiveGrid,
-  JellyfishDrift,
-  KaleidoscopeFractal,
-  KineticSandMarimbas,
-  KineticSandRipple,
-  LSystemTreeForest,
-  LavaLampBlobs,
-  LissajousWebDancer,
-  MagneticFieldLines,
-  MandalaTrigonometry,
-  MathematicalAttractors,
-  MysticForestMist,
-  NebulaGasSwells,
-  NebulaGasSwirl,
-  NeonParticleWeb,
-  NeuralNetworkSynapses,
-  OceanWaveRipple,
-  PerlinFlowField,
-  PlasmaFractalGlow,
-  PulsingAbyssJellyfish,
-  QuantumEntanglement,
-  QuantumFoamDrift,
-  RainbowSpiralTunnel,
-  ResonantDandelionSeeds,
-  RiverStoneRefractions,
-  RiverStonesFlow,
-  SoftSnowStorm,
-  StarfieldHyperdrive,
-  SupernovaExpansion,
-  SwarmingFireflies,
-  SwarmingFireflyFlutes,
-  TrochoidalWaveHarps,
-  VerletMossDampener,
-  VortexFlowField,
-  WaveInterference,
-  WindyGrassChimes,
-  WindyGrassField
-];
+// 1. Code-Split Registry: All 63 animations loaded on-demand via dynamic import()
+// Only lightweight metadata is bundled. Each animation's canvas code loads when selected.
 
 let activeIndex = -1;
+let loadedAnimClass = null; // Cache of the currently loaded animation class
 let copyTimeout = null;
 
 // 2. Main DOM Elements
@@ -314,10 +187,12 @@ sidebarToggle.addEventListener('click', () => {
     leftSidebar.classList.add('collapsed');
     sidebarToggle.style.left = '0px';
     sidebarToggleIcon.style.transform = 'rotate(180deg)';
+    sidebarToggle.setAttribute('aria-expanded', 'false');
   } else {
     leftSidebar.classList.remove('collapsed');
     sidebarToggle.style.left = '';
     sidebarToggleIcon.style.transform = '';
+    sidebarToggle.setAttribute('aria-expanded', 'true');
   }
 });
 
@@ -333,10 +208,12 @@ audioToggle.addEventListener('click', () => {
     audioSidebar.classList.add('collapsed');
     audioToggle.style.right = '0px';
     audioToggleIcon.style.transform = 'rotate(180deg)';
+    audioToggle.setAttribute('aria-expanded', 'false');
   } else {
     audioSidebar.classList.remove('collapsed');
     audioToggle.style.right = '';
     audioToggleIcon.style.transform = '';
+    audioToggle.setAttribute('aria-expanded', 'true');
   }
 });
 
@@ -354,27 +231,32 @@ overlayToggleBtn.addEventListener('click', () => {
     overlayContent.classList.add('hidden');
     overlayToggleText.textContent = 'Expand';
     overlayToggleIcon.style.transform = 'rotate(180deg)';
+    overlayToggleBtn.setAttribute('aria-expanded', 'false');
   } else {
     overlayContent.classList.remove('hidden');
     overlayToggleText.textContent = 'Minimize';
     overlayToggleIcon.style.transform = '';
+    overlayToggleBtn.setAttribute('aria-expanded', 'true');
   }
 });
 
-// 4. Render Sidebar Navigation Items dynamically
-animations.forEach((AnimClass, index) => {
+// 4. Render Sidebar Navigation Items from lightweight registry metadata (no heavy imports!)
+animationRegistry.forEach((anim, index) => {
   const btn = document.createElement('button');
   btn.type = 'button';
   btn.className = 'nav-item w-full flex items-center justify-between py-3.5 px-4 rounded-xl text-left text-sm text-slate-400 hover:text-white cursor-pointer focus:outline-none';
   btn.setAttribute('id', `nav-item-${index}`);
+  btn.setAttribute('role', 'option');
+  btn.setAttribute('aria-selected', 'false');
+  btn.setAttribute('aria-label', `Select ${anim.title} animation`);
   
   // Clean, premium numbering and micro-dot indicators
   btn.innerHTML = `
     <div class="flex items-center gap-3">
-      <span class="w-1.5 h-1.5 rounded-full bg-slate-600 dot-indicator transition-all duration-300"></span>
-      <span class="font-medium tracking-wide">${AnimClass.title}</span>
+      <span class="w-1.5 h-1.5 rounded-full bg-slate-600 dot-indicator transition-all duration-300" aria-hidden="true"></span>
+      <span class="font-medium tracking-wide">${anim.title}</span>
     </div>
-    <span class="text-[10px] text-slate-600 font-mono">${(index + 1).toString().padStart(2, '0')}</span>
+    <span class="text-[10px] text-slate-600 font-mono" aria-hidden="true">${(index + 1).toString().padStart(2, '0')}</span>
   `;
 
   btn.addEventListener('click', () => {
@@ -384,8 +266,8 @@ animations.forEach((AnimClass, index) => {
   listContainer.appendChild(btn);
 });
 
-// 5. Animation selection handler
-function selectAnimation(index) {
+// 5. Animation selection handler — now async with dynamic import()
+async function selectAnimation(index) {
   if (index === activeIndex) return;
   
   // Clean up old active button classes
@@ -393,18 +275,20 @@ function selectAnimation(index) {
     const prevBtn = document.getElementById(`nav-item-${activeIndex}`);
     if (prevBtn) {
       prevBtn.classList.remove('active');
+      prevBtn.setAttribute('aria-selected', 'false');
       const dot = prevBtn.querySelector('.dot-indicator');
       if (dot) dot.className = 'w-1.5 h-1.5 rounded-full bg-slate-600 dot-indicator transition-all duration-300';
     }
   }
 
   activeIndex = index;
-  const AnimClass = animations[index];
+  const animMeta = animationRegistry[index];
 
   // Set active classes on selected item
   const currentBtn = document.getElementById(`nav-item-${index}`);
   if (currentBtn) {
     currentBtn.classList.add('active');
+    currentBtn.setAttribute('aria-selected', 'true');
     
     // Animate the status dot to reflect active state
     const dot = currentBtn.querySelector('.dot-indicator');
@@ -418,31 +302,39 @@ function selectAnimation(index) {
   overlay.style.opacity = '0.3';
   overlay.style.transform = 'translateY(10px)';
 
-  setTimeout(() => {
+  // Update overlay metadata immediately from registry (instant, no network wait)
+  titleElem.textContent = animMeta.title;
+  descElem.textContent = animMeta.description;
+  vibeElem.textContent = animMeta.vibe;
+
+  // Dynamically import the animation module (code splitting!)
+  try {
+    const AnimClass = await animMeta.load();
+    loadedAnimClass = AnimClass;
+
     // Load animation in manager
     manager.setAnimation(AnimClass);
+  } catch (err) {
+    console.error(`Failed to load animation: ${animMeta.id}`, err);
+    titleElem.textContent = 'Error Loading Animation';
+    descElem.textContent = 'This animation could not be loaded. Please try another one.';
+  }
 
-    // Update Floating Overlay Metadata
-    titleElem.textContent = AnimClass.title;
-    descElem.textContent = AnimClass.description;
-    vibeElem.textContent = AnimClass.vibe;
+  // Reset Copy button visual state
+  resetCopyButton();
 
-    // Reset Copy button visual state
-    resetCopyButton();
-
-    overlay.style.opacity = '1.0';
-    overlay.style.transform = 'translateY(0)';
-  }, 250);
+  overlay.style.opacity = '1.0';
+  overlay.style.transform = 'translateY(0)';
 }
 
 // 6. Clipboard copy pipeline
 copyBtn.addEventListener('click', async () => {
   if (activeIndex === -1) return;
   
-  const AnimClass = animations[activeIndex];
+  const animMeta = animationRegistry[activeIndex];
   const origin = window.location.origin;
-  const className = AnimClass.name;
-  const title = AnimClass.title;
+  const className = animMeta.id;
+  const title = animMeta.title;
 
   const embedCode = `<!-- AetherFlow Canvas Background & Ambient soundscape: ${title} -->
 <canvas id="aetherflow-canvas" style="position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1;"></canvas>
@@ -473,7 +365,7 @@ copyBtn.addEventListener('click', async () => {
     LofiMusicEngine.setVolume(${lofiVolume});
     LofiMusicEngine.setVinylVolume(${vinylVolume});
   }, { once: true });
-</script>`;
+<\/script>`;
 
   try {
     // Write code string to clipboard
@@ -509,7 +401,7 @@ function triggerCopySuccess() {
   copyBtn.classList.add('bg-emerald-500/10', 'border-emerald-500/30', 'text-emerald-400');
   
   copyBtn.innerHTML = `
-    <svg class="w-4.5 h-4.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <svg class="w-4.5 h-4.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
     </svg>
     <span>Embed Snippet Copied!</span>
@@ -539,7 +431,7 @@ function triggerCopySuccess() {
 function resetCopyButton() {
   copyBtn.className = 'glass-button flex items-center justify-center gap-2.5 py-3.5 px-6 rounded-xl text-sm font-semibold text-white hover:text-indigo-300 active:scale-98 cursor-pointer focus:outline-none';
   copyBtn.innerHTML = `
-    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path>
     </svg>
     <span>Copy CDN Embed Snippet</span>
