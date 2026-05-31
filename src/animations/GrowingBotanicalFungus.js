@@ -11,8 +11,8 @@ export default class GrowingBotanicalFungus extends BaseAnimation {
     // Bio-electric bioluminescent palette
     this.colors = {
       bg: '#030605', // Deep organic swamp loam
-      hyphae: 'rgba(235, 245, 230, 0.08)', // Faded root structures
-      hyphaeGlow: 'rgba(0, 240, 255, 0.35)', // Glowing excited mycelium
+      hyphae: 'rgba(145, 185, 155, 0.28)', // Cozy sage-moss green, beautifully visible!
+      hyphaeGlow: 'rgba(0, 240, 255, 0.75)', // Glowing excited mycelium
       pulseCore: '#ffffff', // High-intensity spark
       pulseGlow: '#00ffb7' // Teal-neon electric field glow
     };
@@ -238,8 +238,8 @@ export default class GrowingBotanicalFungus extends BaseAnimation {
           ctx.globalAlpha = Math.min(1, 0.2 + glowVal * 0.8);
         } else {
           ctx.strokeStyle = this.colors.hyphae;
-          ctx.lineWidth = 0.95;
-          ctx.globalAlpha = 0.55;
+          ctx.lineWidth = 1.15;
+          ctx.globalAlpha = 0.75;
         }
         ctx.stroke();
       }
@@ -342,8 +342,8 @@ export default class GrowingBotanicalFungus extends BaseAnimation {
     
     this.colors = {
       bg: '#030605',
-      hyphae: 'rgba(235, 245, 230, 0.08)',
-      hyphaeGlow: 'rgba(0, 240, 255, 0.35)',
+      hyphae: 'rgba(145, 185, 155, 0.28)',
+      hyphaeGlow: 'rgba(0, 240, 255, 0.75)',
       pulseCore: '#ffffff',
       pulseGlow: '#00ffb7'
     };
@@ -553,8 +553,8 @@ export default class GrowingBotanicalFungus extends BaseAnimation {
           this.ctx.globalAlpha = Math.min(1, 0.2 + glowVal * 0.8);
         } else {
           this.ctx.strokeStyle = this.colors.hyphae;
-          this.ctx.lineWidth = 0.95;
-          this.ctx.globalAlpha = 0.55;
+          this.ctx.lineWidth = 1.15;
+          this.ctx.globalAlpha = 0.75;
         }
         this.ctx.stroke();
       }

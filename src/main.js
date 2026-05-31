@@ -156,13 +156,16 @@ const telemetry = {
 // 3. Initialize the Global Animation Manager
 const manager = new AnimationManager(canvas, telemetry);
 
-// --- Ambient Lofi Player Instrumentation ---
+// --- Ambient Lofi Configurator Suite Instrumentation ---
 const lofiPlayBtn = document.getElementById('lofi-play-btn');
 const lofiPlayIcon = document.getElementById('lofi-play-icon');
 const lofiVolSlider = document.getElementById('lofi-vol-slider');
 const lofiVolLabel = document.getElementById('lofi-vol-label');
 const vinylVolSlider = document.getElementById('vinyl-vol-slider');
 const vinylVolLabel = document.getElementById('vinyl-vol-label');
+const lofiBpmSlider = document.getElementById('lofi-bpm-slider');
+const lofiBpmLabel = document.getElementById('lofi-bpm-label');
+const lofiTrackSelect = document.getElementById('lofi-track-select');
 const lofiVisualizer = document.getElementById('lofi-visualizer');
 
 // Initialize settings from localStorage
@@ -174,11 +177,30 @@ let vinylVolume = localStorage.getItem('aetherflow_vinyl_vol') !== null
   ? parseFloat(localStorage.getItem('aetherflow_vinyl_vol')) 
   : 0.5;
 
+let lofiTrack = localStorage.getItem('aetherflow_lofi_track') !== null
+  ? localStorage.getItem('aetherflow_lofi_track')
+  : 'lofi-jazz';
+
+let lofiBpm = localStorage.getItem('aetherflow_lofi_bpm') !== null
+  ? parseInt(localStorage.getItem('aetherflow_lofi_bpm'))
+  : 78;
+
 lofiVolSlider.value = lofiVolume;
 lofiVolLabel.textContent = `${Math.round(lofiVolume * 100)}%`;
 
 vinylVolSlider.value = vinylVolume;
 vinylVolLabel.textContent = `${Math.round(vinylVolume * 100)}%`;
+
+lofiTrackSelect.value = lofiTrack;
+LofiMusicEngine.setTrack(lofiTrack);
+
+// If the user hasn't explicitly set a custom BPM, match it to track defaults
+if (localStorage.getItem('aetherflow_lofi_bpm') === null) {
+  lofiBpm = LofiMusicEngine.tracks[lofiTrack].bpm;
+}
+lofiBpmSlider.value = lofiBpm;
+lofiBpmLabel.textContent = `${lofiBpm} BPM`;
+LofiMusicEngine.setBPM(lofiBpm);
 
 let isLofiPlaying = false;
 
@@ -190,12 +212,14 @@ lofiPlayBtn.addEventListener('click', () => {
     lofiPlayIcon.innerHTML = `<path d="M8 5v14l11-7z"></path>`;
     lofiPlayBtn.classList.remove('bg-indigo-500', 'text-white');
     lofiPlayBtn.classList.add('bg-indigo-500/10', 'text-indigo-400');
-    lofiPlayBtn.title = 'Play Cozy Lofi Beats';
+    lofiPlayBtn.title = 'Play Cozy Background Beats';
   } else {
     // Start engine (will lazily initialize context)
     LofiMusicEngine.play();
     
-    // Set initial volumes
+    // Set initial configuration parameters
+    LofiMusicEngine.setTrack(lofiTrack);
+    LofiMusicEngine.setBPM(lofiBpm);
     LofiMusicEngine.setVolume(lofiVolume);
     LofiMusicEngine.setVinylVolume(vinylVolume);
     
@@ -205,7 +229,7 @@ lofiPlayBtn.addEventListener('click', () => {
     lofiPlayIcon.innerHTML = `<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path>`;
     lofiPlayBtn.classList.remove('bg-indigo-500/10', 'text-indigo-400');
     lofiPlayBtn.classList.add('bg-indigo-500', 'text-white');
-    lofiPlayBtn.title = 'Pause Cozy Lofi Beats';
+    lofiPlayBtn.title = 'Pause Cozy Background Beats';
   }
 });
 
@@ -224,6 +248,86 @@ vinylVolSlider.addEventListener('input', (e) => {
   localStorage.setItem('aetherflow_vinyl_vol', vinylVolume);
   if (isLofiPlaying) {
     LofiMusicEngine.setVinylVolume(vinylVolume);
+  }
+});
+
+lofiBpmSlider.addEventListener('input', (e) => {
+  lofiBpm = parseInt(e.target.value);
+  lofiBpmLabel.textContent = `${lofiBpm} BPM`;
+  localStorage.setItem('aetherflow_lofi_bpm', lofiBpm);
+  LofiMusicEngine.setBPM(lofiBpm);
+});
+
+lofiTrackSelect.addEventListener('change', (e) => {
+  lofiTrack = e.target.value;
+  localStorage.setItem('aetherflow_lofi_track', lofiTrack);
+  LofiMusicEngine.setTrack(lofiTrack);
+  
+  // Update tempo parameters automatically based on track recommendation
+  lofiBpm = LofiMusicEngine.tracks[lofiTrack].bpm;
+  lofiBpmSlider.value = lofiBpm;
+  lofiBpmLabel.textContent = `${lofiBpm} BPM`;
+  localStorage.setItem('aetherflow_lofi_bpm', lofiBpm);
+  LofiMusicEngine.setBPM(lofiBpm);
+});
+
+// --- Collapsible Split-Screen Panel Instrumentations ---
+const leftSidebar = document.getElementById('left-sidebar');
+const sidebarToggle = document.getElementById('sidebar-toggle');
+const sidebarToggleIcon = document.getElementById('sidebar-toggle-icon');
+
+let isSidebarCollapsed = false;
+
+sidebarToggle.addEventListener('click', () => {
+  isSidebarCollapsed = !isSidebarCollapsed;
+  if (isSidebarCollapsed) {
+    leftSidebar.classList.add('collapsed');
+    sidebarToggle.style.left = '0px';
+    sidebarToggleIcon.style.transform = 'rotate(180deg)';
+  } else {
+    leftSidebar.classList.remove('collapsed');
+    sidebarToggle.style.left = '';
+    sidebarToggleIcon.style.transform = '';
+  }
+});
+
+const audioSidebar = document.getElementById('audio-sidebar');
+const audioToggle = document.getElementById('audio-toggle');
+const audioToggleIcon = document.getElementById('audio-toggle-icon');
+
+let isAudioCollapsed = false;
+
+audioToggle.addEventListener('click', () => {
+  isAudioCollapsed = !isAudioCollapsed;
+  if (isAudioCollapsed) {
+    audioSidebar.classList.add('collapsed');
+    audioToggle.style.right = '0px';
+    audioToggleIcon.style.transform = 'rotate(180deg)';
+  } else {
+    audioSidebar.classList.remove('collapsed');
+    audioToggle.style.right = '';
+    audioToggleIcon.style.transform = '';
+  }
+});
+
+// --- Collapsible Bottom Overlay Panel ---
+const overlayToggleBtn = document.getElementById('overlay-toggle-btn');
+const overlayToggleIcon = document.getElementById('overlay-toggle-icon');
+const overlayToggleText = document.getElementById('overlay-toggle-text');
+const overlayContent = document.getElementById('overlay-content');
+
+let isOverlayMinimized = false;
+
+overlayToggleBtn.addEventListener('click', () => {
+  isOverlayMinimized = !isOverlayMinimized;
+  if (isOverlayMinimized) {
+    overlayContent.classList.add('hidden');
+    overlayToggleText.textContent = 'Expand';
+    overlayToggleIcon.style.transform = 'rotate(180deg)';
+  } else {
+    overlayContent.classList.remove('hidden');
+    overlayToggleText.textContent = 'Minimize';
+    overlayToggleIcon.style.transform = '';
   }
 });
 
@@ -310,18 +414,35 @@ copyBtn.addEventListener('click', async () => {
   const className = AnimClass.name;
   const title = AnimClass.title;
 
-  const embedCode = `<!-- AetherFlow Canvas Background: ${title} -->
+  const embedCode = `<!-- AetherFlow Canvas Background & Ambient soundscape: ${title} -->
 <canvas id="aetherflow-canvas" style="position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1;"></canvas>
 
 <script type="module">
   import AnimationManager from '${origin}/cdn/AnimationManager.js';
   import ${className} from '${origin}/cdn/${className}.js';
+  import LofiMusicEngine from '${origin}/cdn/LofiMusicEngine.js';
 
   const canvas = document.getElementById('aetherflow-canvas');
   
   // Binds hardware-accelerated 60fps tracking, high-DPI scaling, and resize observers
   const manager = new AnimationManager(canvas);
   manager.setAnimation(${className});
+
+  // Optional: Start ambient background audio workstation!
+  // Customizable parameters:
+  // LofiMusicEngine.setTrack('lofi-jazz'); // options: 'lofi-jazz', 'midnight-ambient', 'synthwave-retro'
+  // LofiMusicEngine.setBPM(78); // set custom tempo BPM (40-180)
+  // LofiMusicEngine.setVolume(0.4); // set master volume
+  // LofiMusicEngine.setVinylVolume(0.25); // set vintage vinyl hum/crackle level
+  
+  window.addEventListener('click', () => {
+    // Play lazily on first user gesture to satisfy browser autoplay restrictions
+    LofiMusicEngine.play();
+    LofiMusicEngine.setTrack('${lofiTrack}');
+    LofiMusicEngine.setBPM(${lofiBpm});
+    LofiMusicEngine.setVolume(${lofiVolume});
+    LofiMusicEngine.setVinylVolume(${vinylVolume});
+  }, { once: true });
 </script>`;
 
   try {
