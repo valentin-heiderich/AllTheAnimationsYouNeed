@@ -1,14 +1,76 @@
 import './style.css';
 import AnimationManager from './animations/AnimationManager.js';
-import NeonParticleWeb from './animations/NeonParticleWeb.js';
-import FluidGradientNoise from './animations/FluidGradientNoise.js';
+
+// Import All 33 Animations alphabetically
+import AbstractStringSymphony from './animations/AbstractStringSymphony.js';
+import ASCIICyberStreams from './animations/ASCIICyberStreams.js';
+import AuroraBorealisWave from './animations/AuroraBorealisWave.js';
+import BioluminescentSwarm from './animations/BioluminescentSwarm.js';
+import BoidsFlockingSwarm from './animations/BoidsFlockingSwarm.js';
+import CelestialOrbitGravity from './animations/CelestialOrbitGravity.js';
 import CosmicRibbonFlow from './animations/CosmicRibbonFlow.js';
+import DelaunayTriangulation from './animations/DelaunayTriangulation.js';
+import DigitalRainMatrix from './animations/DigitalRainMatrix.js';
+import DNASpiralHelix from './animations/DNASpiralHelix.js';
+import FluidGradientNoise from './animations/FluidGradientNoise.js';
+import FractalTreeGrowth from './animations/FractalTreeGrowth.js';
+import GeometricMatrixGrid from './animations/GeometricMatrixGrid.js';
+import GeometricSphericalWave from './animations/GeometricSphericalWave.js';
+import HexagonalHiveGrid from './animations/HexagonalHiveGrid.js';
+import KaleidoscopeFractal from './animations/KaleidoscopeFractal.js';
+import LavaLampBlobs from './animations/LavaLampBlobs.js';
+import LissajousWebDancer from './animations/LissajousWebDancer.js';
+import MagneticFieldLines from './animations/MagneticFieldLines.js';
+import MandalaTrigonometry from './animations/MandalaTrigonometry.js';
+import MathematicalAttractors from './animations/MathematicalAttractors.js';
+import NeonParticleWeb from './animations/NeonParticleWeb.js';
+import NeuralNetworkSynapses from './animations/NeuralNetworkSynapses.js';
+import PerlinFlowField from './animations/PerlinFlowField.js';
+import PlasmaFractalGlow from './animations/PlasmaFractalGlow.js';
+import QuantumEntanglement from './animations/QuantumEntanglement.js';
+import QuantumFoamDrift from './animations/QuantumFoamDrift.js';
+import RainbowSpiralTunnel from './animations/RainbowSpiralTunnel.js';
+import StarfieldHyperdrive from './animations/StarfieldHyperdrive.js';
+import SupernovaExpansion from './animations/SupernovaExpansion.js';
+import VortexFlowField from './animations/VortexFlowField.js';
+import WaveInterference from './animations/WaveInterference.js';
+import WindyGrassField from './animations/WindyGrassField.js';
 
 // 1. Registry of available animations
 const animations = [
-  NeonParticleWeb,
+  AbstractStringSymphony,
+  ASCIICyberStreams,
+  AuroraBorealisWave,
+  BioluminescentSwarm,
+  BoidsFlockingSwarm,
+  CelestialOrbitGravity,
+  CosmicRibbonFlow,
+  DelaunayTriangulation,
+  DigitalRainMatrix,
+  DNASpiralHelix,
   FluidGradientNoise,
-  CosmicRibbonFlow
+  FractalTreeGrowth,
+  GeometricMatrixGrid,
+  GeometricSphericalWave,
+  HexagonalHiveGrid,
+  KaleidoscopeFractal,
+  LavaLampBlobs,
+  LissajousWebDancer,
+  MagneticFieldLines,
+  MandalaTrigonometry,
+  MathematicalAttractors,
+  NeonParticleWeb,
+  NeuralNetworkSynapses,
+  PerlinFlowField,
+  PlasmaFractalGlow,
+  QuantumEntanglement,
+  QuantumFoamDrift,
+  RainbowSpiralTunnel,
+  StarfieldHyperdrive,
+  SupernovaExpansion,
+  VortexFlowField,
+  WaveInterference,
+  WindyGrassField
 ];
 
 let activeIndex = -1;
