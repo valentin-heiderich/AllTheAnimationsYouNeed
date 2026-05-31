@@ -111,11 +111,27 @@ copyBtn.addEventListener('click', async () => {
   if (activeIndex === -1) return;
   
   const AnimClass = animations[activeIndex];
-  const sourceCode = AnimClass.sourceCode;
+  const origin = window.location.origin;
+  const className = AnimClass.name;
+  const title = AnimClass.title;
+
+  const embedCode = `<!-- AetherFlow Canvas Background: ${title} -->
+<canvas id="aetherflow-canvas" style="position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1;"></canvas>
+
+<script type="module">
+  import AnimationManager from '${origin}/cdn/AnimationManager.js';
+  import ${className} from '${origin}/cdn/${className}.js';
+
+  const canvas = document.getElementById('aetherflow-canvas');
+  
+  // Binds hardware-accelerated 60fps tracking, high-DPI scaling, and resize observers
+  const manager = new AnimationManager(canvas);
+  manager.setAnimation(${className});
+</script>`;
 
   try {
     // Write code string to clipboard
-    await navigator.clipboard.writeText(sourceCode);
+    await navigator.clipboard.writeText(embedCode);
     
     // Trigger successful copy state
     triggerCopySuccess();
@@ -124,7 +140,7 @@ copyBtn.addEventListener('click', async () => {
     
     // Fallback: simple copy attempt using older execCommand if clipboard fails
     const textarea = document.createElement('textarea');
-    textarea.value = sourceCode;
+    textarea.value = embedCode;
     textarea.style.position = 'fixed';
     document.body.appendChild(textarea);
     textarea.select();
@@ -147,10 +163,10 @@ function triggerCopySuccess() {
   copyBtn.classList.add('bg-emerald-500/10', 'border-emerald-500/30', 'text-emerald-400');
   
   copyBtn.innerHTML = `
-    <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <svg class="w-4.5 h-4.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
     </svg>
-    <span>Source Code Copied!</span>
+    <span>Embed Snippet Copied!</span>
   `;
 
   // 2. Spawn slide-up toast notification
@@ -180,7 +196,7 @@ function resetCopyButton() {
     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path>
     </svg>
-    <span>Copy Source Code</span>
+    <span>Copy CDN Embed Snippet</span>
   `;
 }
 
