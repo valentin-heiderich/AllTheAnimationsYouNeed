@@ -1,73 +1,104 @@
 import './style.css';
 import AnimationManager from './animations/AnimationManager.js';
+import LofiMusicEngine from './audio/LofiMusicEngine.js';
 
-// Import All 33 Animations alphabetically
+// Import All 48 Animations alphabetically
 import AbstractStringSymphony from './animations/AbstractStringSymphony.js';
 import ASCIICyberStreams from './animations/ASCIICyberStreams.js';
 import AuroraBorealisWave from './animations/AuroraBorealisWave.js';
+import BendingVineIvy from './animations/BendingVineIvy.js';
+import BioluminescentRain from './animations/BioluminescentRain.js';
 import BioluminescentSwarm from './animations/BioluminescentSwarm.js';
 import BoidsFlockingSwarm from './animations/BoidsFlockingSwarm.js';
 import CelestialOrbitGravity from './animations/CelestialOrbitGravity.js';
 import CosmicRibbonFlow from './animations/CosmicRibbonFlow.js';
+import DandelionWindSeeds from './animations/DandelionWindSeeds.js';
 import DelaunayTriangulation from './animations/DelaunayTriangulation.js';
 import DigitalRainMatrix from './animations/DigitalRainMatrix.js';
 import DNASpiralHelix from './animations/DNASpiralHelix.js';
+import FloatingAutumnLeaves from './animations/FloatingAutumnLeaves.js';
+import FlockingButterflies from './animations/FlockingButterflies.js';
 import FluidGradientNoise from './animations/FluidGradientNoise.js';
 import FractalTreeGrowth from './animations/FractalTreeGrowth.js';
 import GeometricMatrixGrid from './animations/GeometricMatrixGrid.js';
 import GeometricSphericalWave from './animations/GeometricSphericalWave.js';
+import GrowingBotanicalFungus from './animations/GrowingBotanicalFungus.js';
 import HexagonalHiveGrid from './animations/HexagonalHiveGrid.js';
+import JellyfishDrift from './animations/JellyfishDrift.js';
 import KaleidoscopeFractal from './animations/KaleidoscopeFractal.js';
+import KineticSandRipple from './animations/KineticSandRipple.js';
+import LSystemTreeForest from './animations/LSystemTreeForest.js';
 import LavaLampBlobs from './animations/LavaLampBlobs.js';
 import LissajousWebDancer from './animations/LissajousWebDancer.js';
 import MagneticFieldLines from './animations/MagneticFieldLines.js';
 import MandalaTrigonometry from './animations/MandalaTrigonometry.js';
 import MathematicalAttractors from './animations/MathematicalAttractors.js';
+import MysticForestMist from './animations/MysticForestMist.js';
+import NebulaGasSwirl from './animations/NebulaGasSwirl.js';
 import NeonParticleWeb from './animations/NeonParticleWeb.js';
 import NeuralNetworkSynapses from './animations/NeuralNetworkSynapses.js';
+import OceanWaveRipple from './animations/OceanWaveRipple.js';
 import PerlinFlowField from './animations/PerlinFlowField.js';
 import PlasmaFractalGlow from './animations/PlasmaFractalGlow.js';
 import QuantumEntanglement from './animations/QuantumEntanglement.js';
 import QuantumFoamDrift from './animations/QuantumFoamDrift.js';
 import RainbowSpiralTunnel from './animations/RainbowSpiralTunnel.js';
+import RiverStonesFlow from './animations/RiverStonesFlow.js';
+import SoftSnowStorm from './animations/SoftSnowStorm.js';
 import StarfieldHyperdrive from './animations/StarfieldHyperdrive.js';
 import SupernovaExpansion from './animations/SupernovaExpansion.js';
+import SwarmingFireflies from './animations/SwarmingFireflies.js';
 import VortexFlowField from './animations/VortexFlowField.js';
 import WaveInterference from './animations/WaveInterference.js';
 import WindyGrassField from './animations/WindyGrassField.js';
 
-// 1. Registry of available animations
+// 1. Registry of available 48 animations
 const animations = [
   AbstractStringSymphony,
   ASCIICyberStreams,
   AuroraBorealisWave,
+  BendingVineIvy,
+  BioluminescentRain,
   BioluminescentSwarm,
   BoidsFlockingSwarm,
   CelestialOrbitGravity,
   CosmicRibbonFlow,
+  DandelionWindSeeds,
   DelaunayTriangulation,
   DigitalRainMatrix,
   DNASpiralHelix,
+  FloatingAutumnLeaves,
+  FlockingButterflies,
   FluidGradientNoise,
   FractalTreeGrowth,
   GeometricMatrixGrid,
   GeometricSphericalWave,
+  GrowingBotanicalFungus,
   HexagonalHiveGrid,
+  JellyfishDrift,
   KaleidoscopeFractal,
+  KineticSandRipple,
+  LSystemTreeForest,
   LavaLampBlobs,
   LissajousWebDancer,
   MagneticFieldLines,
   MandalaTrigonometry,
   MathematicalAttractors,
+  MysticForestMist,
+  NebulaGasSwirl,
   NeonParticleWeb,
   NeuralNetworkSynapses,
+  OceanWaveRipple,
   PerlinFlowField,
   PlasmaFractalGlow,
   QuantumEntanglement,
   QuantumFoamDrift,
   RainbowSpiralTunnel,
+  RiverStonesFlow,
+  SoftSnowStorm,
   StarfieldHyperdrive,
   SupernovaExpansion,
+  SwarmingFireflies,
   VortexFlowField,
   WaveInterference,
   WindyGrassField
@@ -125,6 +156,77 @@ const telemetry = {
 // 3. Initialize the Global Animation Manager
 const manager = new AnimationManager(canvas, telemetry);
 
+// --- Ambient Lofi Player Instrumentation ---
+const lofiPlayBtn = document.getElementById('lofi-play-btn');
+const lofiPlayIcon = document.getElementById('lofi-play-icon');
+const lofiVolSlider = document.getElementById('lofi-vol-slider');
+const lofiVolLabel = document.getElementById('lofi-vol-label');
+const vinylVolSlider = document.getElementById('vinyl-vol-slider');
+const vinylVolLabel = document.getElementById('vinyl-vol-label');
+const lofiVisualizer = document.getElementById('lofi-visualizer');
+
+// Initialize settings from localStorage
+let lofiVolume = localStorage.getItem('aetherflow_lofi_vol') !== null 
+  ? parseFloat(localStorage.getItem('aetherflow_lofi_vol')) 
+  : 0.5;
+
+let vinylVolume = localStorage.getItem('aetherflow_vinyl_vol') !== null 
+  ? parseFloat(localStorage.getItem('aetherflow_vinyl_vol')) 
+  : 0.5;
+
+lofiVolSlider.value = lofiVolume;
+lofiVolLabel.textContent = `${Math.round(lofiVolume * 100)}%`;
+
+vinylVolSlider.value = vinylVolume;
+vinylVolLabel.textContent = `${Math.round(vinylVolume * 100)}%`;
+
+let isLofiPlaying = false;
+
+lofiPlayBtn.addEventListener('click', () => {
+  if (isLofiPlaying) {
+    LofiMusicEngine.pause();
+    isLofiPlaying = false;
+    lofiVisualizer.classList.remove('playing');
+    lofiPlayIcon.innerHTML = `<path d="M8 5v14l11-7z"></path>`;
+    lofiPlayBtn.classList.remove('bg-indigo-500', 'text-white');
+    lofiPlayBtn.classList.add('bg-indigo-500/10', 'text-indigo-400');
+    lofiPlayBtn.title = 'Play Cozy Lofi Beats';
+  } else {
+    // Start engine (will lazily initialize context)
+    LofiMusicEngine.play();
+    
+    // Set initial volumes
+    LofiMusicEngine.setVolume(lofiVolume);
+    LofiMusicEngine.setVinylVolume(vinylVolume);
+    
+    isLofiPlaying = true;
+    lofiVisualizer.classList.add('playing');
+    // Change SVG to Pause icon
+    lofiPlayIcon.innerHTML = `<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path>`;
+    lofiPlayBtn.classList.remove('bg-indigo-500/10', 'text-indigo-400');
+    lofiPlayBtn.classList.add('bg-indigo-500', 'text-white');
+    lofiPlayBtn.title = 'Pause Cozy Lofi Beats';
+  }
+});
+
+lofiVolSlider.addEventListener('input', (e) => {
+  lofiVolume = parseFloat(e.target.value);
+  lofiVolLabel.textContent = `${Math.round(lofiVolume * 100)}%`;
+  localStorage.setItem('aetherflow_lofi_vol', lofiVolume);
+  if (isLofiPlaying) {
+    LofiMusicEngine.setVolume(lofiVolume);
+  }
+});
+
+vinylVolSlider.addEventListener('input', (e) => {
+  vinylVolume = parseFloat(e.target.value);
+  vinylVolLabel.textContent = `${Math.round(vinylVolume * 100)}%`;
+  localStorage.setItem('aetherflow_vinyl_vol', vinylVolume);
+  if (isLofiPlaying) {
+    LofiMusicEngine.setVinylVolume(vinylVolume);
+  }
+});
+
 // 4. Render Sidebar Navigation Items dynamically
 animations.forEach((AnimClass, index) => {
   const btn = document.createElement('button');
@@ -138,7 +240,7 @@ animations.forEach((AnimClass, index) => {
       <span class="w-1.5 h-1.5 rounded-full bg-slate-600 dot-indicator transition-all duration-300"></span>
       <span class="font-medium tracking-wide">${AnimClass.title}</span>
     </div>
-    <span class="text-[10px] text-slate-600 font-mono">0${index + 1}</span>
+    <span class="text-[10px] text-slate-600 font-mono">${(index + 1).toString().padStart(2, '0')}</span>
   `;
 
   btn.addEventListener('click', () => {

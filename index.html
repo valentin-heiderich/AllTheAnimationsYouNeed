@@ -44,6 +44,48 @@
             <!-- Navigation items populated dynamically via JavaScript -->
           </div>
         </nav>
+        
+        <!-- Ambient Lofi Player Card -->
+        <div class="px-6 py-4 border-t border-white/5 bg-[#080B11]/90 backdrop-blur-md space-y-3.5">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2.5">
+              <!-- Equalizer animation -->
+              <div id="lofi-visualizer" class="flex items-end gap-[3px] h-3.5 w-6">
+                <span class="bar w-[3px] bg-indigo-400 rounded-full h-1"></span>
+                <span class="bar w-[3px] bg-indigo-400 rounded-full h-1"></span>
+                <span class="bar w-[3px] bg-indigo-400 rounded-full h-1"></span>
+                <span class="bar w-[3px] bg-indigo-400 rounded-full h-1"></span>
+                <span class="bar w-[3px] bg-indigo-400 rounded-full h-1"></span>
+              </div>
+              <div class="flex flex-col">
+                <span class="text-[9px] text-slate-500 font-bold uppercase tracking-wider leading-none">Ambient Audio</span>
+                <span class="text-[11px] text-indigo-300 font-medium tracking-wide">Cozy Lofi Beats</span>
+              </div>
+            </div>
+            
+            <button id="lofi-play-btn" class="w-8 h-8 rounded-lg bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 hover:bg-indigo-500 hover:text-white flex items-center justify-center cursor-pointer transition-all duration-200 active:scale-95" title="Play Cozy Lofi Beats">
+              <svg id="lofi-play-icon" class="w-4 h-4 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <!-- Play Icon initial state -->
+                <path d="M8 5v14l11-7z"></path>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Volume Controls -->
+          <div class="space-y-2 text-[10px]">
+            <div class="flex items-center justify-between text-slate-400">
+              <span>Music Level</span>
+              <span id="lofi-vol-label" class="font-mono text-indigo-300">50%</span>
+            </div>
+            <input id="lofi-vol-slider" type="range" min="0" max="1" step="0.05" value="0.5" class="w-full h-1 rounded-lg bg-white/10 appearance-none cursor-pointer accent-indigo-500 focus:outline-none" />
+            
+            <div class="flex items-center justify-between text-slate-400 pt-1">
+              <span>Vinyl Dust</span>
+              <span id="vinyl-vol-label" class="font-mono text-indigo-300">50%</span>
+            </div>
+            <input id="vinyl-vol-slider" type="range" min="0" max="1" step="0.05" value="0.5" class="w-full h-1 rounded-lg bg-white/10 appearance-none cursor-pointer accent-indigo-500 focus:outline-none" />
+          </div>
+        </div>
 
         <!-- Dynamic Debug/Telemetry Panel -->
         <div class="p-6 border-t border-white/5 bg-[#070A0F] space-y-4">
