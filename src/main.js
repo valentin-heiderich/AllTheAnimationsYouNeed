@@ -2,22 +2,28 @@ import './style.css';
 import AnimationManager from './animations/AnimationManager.js';
 import LofiMusicEngine from './audio/LofiMusicEngine.js';
 
-// Import All 48 Animations alphabetically
+// Import All 63 Animations alphabetically
 import AbstractStringSymphony from './animations/AbstractStringSymphony.js';
+import AcousticMyceliumNetwork from './animations/AcousticMyceliumNetwork.js';
 import ASCIICyberStreams from './animations/ASCIICyberStreams.js';
 import AuroraBorealisWave from './animations/AuroraBorealisWave.js';
 import BendingVineIvy from './animations/BendingVineIvy.js';
 import BioluminescentRain from './animations/BioluminescentRain.js';
+import BioluminescentRainPianos from './animations/BioluminescentRainPianos.js';
 import BioluminescentSwarm from './animations/BioluminescentSwarm.js';
+import BloomingLSystemForest from './animations/BloomingLSystemForest.js';
 import BoidsFlockingSwarm from './animations/BoidsFlockingSwarm.js';
 import CelestialOrbitGravity from './animations/CelestialOrbitGravity.js';
+import ChimingVinesIvy from './animations/ChimingVinesIvy.js';
 import CosmicRibbonFlow from './animations/CosmicRibbonFlow.js';
 import DandelionWindSeeds from './animations/DandelionWindSeeds.js';
 import DelaunayTriangulation from './animations/DelaunayTriangulation.js';
 import DigitalRainMatrix from './animations/DigitalRainMatrix.js';
 import DNASpiralHelix from './animations/DNASpiralHelix.js';
 import FloatingAutumnLeaves from './animations/FloatingAutumnLeaves.js';
+import FloatingAutumnWoodwinds from './animations/FloatingAutumnWoodwinds.js';
 import FlockingButterflies from './animations/FlockingButterflies.js';
+import FlockingButterflyStrings from './animations/FlockingButterflyStrings.js';
 import FluidGradientNoise from './animations/FluidGradientNoise.js';
 import FractalTreeGrowth from './animations/FractalTreeGrowth.js';
 import GeometricMatrixGrid from './animations/GeometricMatrixGrid.js';
@@ -26,6 +32,7 @@ import GrowingBotanicalFungus from './animations/GrowingBotanicalFungus.js';
 import HexagonalHiveGrid from './animations/HexagonalHiveGrid.js';
 import JellyfishDrift from './animations/JellyfishDrift.js';
 import KaleidoscopeFractal from './animations/KaleidoscopeFractal.js';
+import KineticSandMarimbas from './animations/KineticSandMarimbas.js';
 import KineticSandRipple from './animations/KineticSandRipple.js';
 import LSystemTreeForest from './animations/LSystemTreeForest.js';
 import LavaLampBlobs from './animations/LavaLampBlobs.js';
@@ -34,41 +41,55 @@ import MagneticFieldLines from './animations/MagneticFieldLines.js';
 import MandalaTrigonometry from './animations/MandalaTrigonometry.js';
 import MathematicalAttractors from './animations/MathematicalAttractors.js';
 import MysticForestMist from './animations/MysticForestMist.js';
+import NebulaGasSwells from './animations/NebulaGasSwells.js';
 import NebulaGasSwirl from './animations/NebulaGasSwirl.js';
 import NeonParticleWeb from './animations/NeonParticleWeb.js';
 import NeuralNetworkSynapses from './animations/NeuralNetworkSynapses.js';
 import OceanWaveRipple from './animations/OceanWaveRipple.js';
 import PerlinFlowField from './animations/PerlinFlowField.js';
 import PlasmaFractalGlow from './animations/PlasmaFractalGlow.js';
+import PulsingAbyssJellyfish from './animations/PulsingAbyssJellyfish.js';
 import QuantumEntanglement from './animations/QuantumEntanglement.js';
 import QuantumFoamDrift from './animations/QuantumFoamDrift.js';
 import RainbowSpiralTunnel from './animations/RainbowSpiralTunnel.js';
+import ResonantDandelionSeeds from './animations/ResonantDandelionSeeds.js';
+import RiverStoneRefractions from './animations/RiverStoneRefractions.js';
 import RiverStonesFlow from './animations/RiverStonesFlow.js';
 import SoftSnowStorm from './animations/SoftSnowStorm.js';
 import StarfieldHyperdrive from './animations/StarfieldHyperdrive.js';
 import SupernovaExpansion from './animations/SupernovaExpansion.js';
 import SwarmingFireflies from './animations/SwarmingFireflies.js';
+import SwarmingFireflyFlutes from './animations/SwarmingFireflyFlutes.js';
+import TrochoidalWaveHarps from './animations/TrochoidalWaveHarps.js';
+import VerletMossDampener from './animations/VerletMossDampener.js';
 import VortexFlowField from './animations/VortexFlowField.js';
 import WaveInterference from './animations/WaveInterference.js';
+import WindyGrassChimes from './animations/WindyGrassChimes.js';
 import WindyGrassField from './animations/WindyGrassField.js';
 
-// 1. Registry of available 48 animations
+// 1. Registry of available 63 animations
 const animations = [
   AbstractStringSymphony,
+  AcousticMyceliumNetwork,
   ASCIICyberStreams,
   AuroraBorealisWave,
   BendingVineIvy,
   BioluminescentRain,
+  BioluminescentRainPianos,
   BioluminescentSwarm,
+  BloomingLSystemForest,
   BoidsFlockingSwarm,
   CelestialOrbitGravity,
+  ChimingVinesIvy,
   CosmicRibbonFlow,
   DandelionWindSeeds,
   DelaunayTriangulation,
   DigitalRainMatrix,
   DNASpiralHelix,
   FloatingAutumnLeaves,
+  FloatingAutumnWoodwinds,
   FlockingButterflies,
+  FlockingButterflyStrings,
   FluidGradientNoise,
   FractalTreeGrowth,
   GeometricMatrixGrid,
@@ -77,6 +98,7 @@ const animations = [
   HexagonalHiveGrid,
   JellyfishDrift,
   KaleidoscopeFractal,
+  KineticSandMarimbas,
   KineticSandRipple,
   LSystemTreeForest,
   LavaLampBlobs,
@@ -85,22 +107,30 @@ const animations = [
   MandalaTrigonometry,
   MathematicalAttractors,
   MysticForestMist,
+  NebulaGasSwells,
   NebulaGasSwirl,
   NeonParticleWeb,
   NeuralNetworkSynapses,
   OceanWaveRipple,
   PerlinFlowField,
   PlasmaFractalGlow,
+  PulsingAbyssJellyfish,
   QuantumEntanglement,
   QuantumFoamDrift,
   RainbowSpiralTunnel,
+  ResonantDandelionSeeds,
+  RiverStoneRefractions,
   RiverStonesFlow,
   SoftSnowStorm,
   StarfieldHyperdrive,
   SupernovaExpansion,
   SwarmingFireflies,
+  SwarmingFireflyFlutes,
+  TrochoidalWaveHarps,
+  VerletMossDampener,
   VortexFlowField,
   WaveInterference,
+  WindyGrassChimes,
   WindyGrassField
 ];
 
